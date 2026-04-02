@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}Home – TrailBook{% endblock %}
+
+{% block content %}
+    <section class="py-5 text-center bg-light rounded">
+        <h1 class="display-5 fw-bold">Document your rides. Discover new routes.</h1>
+        <div class="mt-4 d-flex justify-content-center gap-3">
+            <a href="#" class="btn btn-primary btn-lg">Explore Trips</a>
+            {% if user.is_authenticated %}
+                <a href="#" class="btn btn-outline-primary btn-lg">Start a New Trip</a>
+            {% endif %}
+        </div>
+    </section>
+
+    <section class="mt-5">
+        <h2 class="mb-3">Featured Trips</h2>
+        <p class="text-muted">Coming soon...</p>
+    </section>
+{% endblock %}

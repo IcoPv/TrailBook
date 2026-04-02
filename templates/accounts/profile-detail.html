@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ profile_user.username }} – TrailBook{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-3 text-center mb-4">
+            {% if profile_user.profile.avatar %}
+                <img src="{{ profile_user.profile.avatar.url }}"
+                     alt="{{ profile_user.username }}'s avatar"
+                     class="rounded-circle img-fluid"
+                     style="width: 150px; height: 150px; object-fit: cover;">
+            {% else %}
+                <div class="rounded-circle bg-secondary d-inline-flex align-items-center justify-content-center text-white"
+                     style="width: 150px; height: 150px; font-size: 3rem;">
+                    {{ profile_user.username|first|upper }}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="col-md-9">
+            <h1 class="mb-1">{{ profile_user.username }}</h1>
+
+            {% if profile_user.profile.location %}
+                <p class="text-muted mb-2">
+                    <small>{{ profile_user.profile.location }}</small>
+                </p>
+            {% endif %}
+
+            {% if profile_user.profile.bio %}
+                <p class="mb-3">{{ profile_user.profile.bio }}</p>
+            {% endif %}
+
+            <ul class="list-unstyled mb-4">
+                <li><strong>Vehicle:</strong> {{ profile_user.profile.get_vehicle_type_display }}</li>
+                <li><strong>Experience:</strong> {{ profile_user.profile.get_riding_experience_display }}</li>
+            </ul>
+
+            {% if profile_user == request.user %}
+                <a href="{% url 'accounts:profile_edit' %}" class="btn btn-primary me-2">Edit Profile</a>
+                <a href="{% url 'accounts:profile_delete' %}" class="btn btn-outline-danger">Delete Account</a>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
