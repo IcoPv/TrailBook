@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}Delete Trip | TrailBook{% endblock %}
+
+{% block content %}
+
+<!-- Delete Warning -->
+<div class="alert alert-danger" role="alert">
+    <strong>Warning:</strong> This action is permanent and cannot be undone. Deleting this trip will also remove all associated waypoints, photos, and trail notes.
+</div>
+
+<!-- Trip Info -->
+<div class="mb-4">
+    <h1 class="mb-1">{{ trip.title }}</h1>
+    <p class="text-muted mb-0">{{ trip.start_date }} &mdash; {{ trip.end_date }}</p>
+</div>
+
+<!-- Delete Form -->
+<form method="POST">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger me-2">Delete Trip</button>
+    <a href="{% url 'trips:trip_detail' trip.slug %}" class="btn btn-secondary">Cancel</a>
+</form>
+
+{% endblock %}

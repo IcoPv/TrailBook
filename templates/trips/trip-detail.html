@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ trip.title }} | TrailBook{% endblock %}
+
+{% block content %}
+
+<!-- Trip Header -->
+<div class="mb-4">
+    <h1 class="mb-1">{{ trip.title }}</h1>
+    <p class="text-muted mb-2">
+        by <a href="{% url 'accounts:profile' trip.owner.username %}">{{ trip.owner.username }}</a>
+    </p>
+    <div class="d-flex flex-wrap align-items-center gap-2">
+        {% if trip.difficulty == 'easy' %}
+            <span class="badge bg-success fs-6">{{ trip.get_difficulty_display }}</span>
+        {% elif trip.difficulty == 'moderate' %}
+            <span class="badge bg-warning text-dark fs-6">{{ trip.get_difficulty_display }}</span>
+        {% elif trip.difficulty == 'challenging' %}
+            <span class="badge fs-6" style="background-color:#fd7e14;">{{ trip.get_difficulty_display }}</span>
+        {% elif trip.difficulty == 'extreme' %}
+            <span class="badge bg-danger fs-6">{{ trip.get_difficulty_display }}</span>
+        {% endif %}
+        <span class="badge bg-secondary fs-6">{{ trip.get_vehicle_type_display }}</span>
+        <span class="text-muted small">
+            {{ trip.start_date }} &mdash; {{ trip.end_date }}
+            {% if trip.duration_days %}
+                &nbsp;&middot;&nbsp; {{ trip.duration_days }} day{{ trip.duration_days|pluralize }}
+            {% endif %}
+        </span>
+    </div>
+</div>
+
+<!-- Trip Description -->
+<div class="card mb-4 shadow-sm">
+    <div class="card-body">
+        <h5 class="card-title">Description</h5>
+        <p class="card-text">{{ trip.description }}</p>
+    </div>
+</div>
+
+<!-- Trip Tags -->
+{% if trip.tags.all %}
+<div class="mb-4">
+    <h5>Tags</h5>
+    {% for tag in trip.tags.all %}
+        <span class="badge rounded-pill bg-light text-dark border me-1">{{ tag.name }}</span>
+    {% endfor %}
+</div>
+{% endif %}
+
+<!-- Waypoints Section -->
+<div class="card mb-4 shadow-sm">
+    <div class="card-body">
+        <h5 class="card-title">Waypoints</h5>
+        <p class="text-muted mb-0">Coming in Phase 3...</p>
+    </div>
+</div>
+
+<!-- Trail Notes Section -->
+<div class="card mb-4 shadow-sm">
+    <div class="card-body">
+        <h5 class="card-title">Trail Notes</h5>
+        <p class="text-muted mb-0">Coming in Phase 5...</p>
+    </div>
+</div>
+
+<!-- Owner Actions -->
+{% if trip.owner == request.user %}
+<div class="d-flex gap-2 mb-4">
+    <a href="{% url 'trips:update_trip' trip.slug %}" class="btn btn-primary">Edit Trip</a>
+    <a href="{% url 'trips:delete_trip' trip.slug %}" class="btn btn-outline-danger">Delete Trip</a>
+</div>
+{% endif %}
+
+<!-- Back Link -->
+<a href="{% url 'trips:trips_list' %}" class="text-decoration-none">&larr; Back to Trips</a>
+
+{% endblock %}
