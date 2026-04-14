@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models
+from autoslug import AutoSlugField
 
 from trips.choices import Difficulty, VehicleTypeTrips
 
@@ -41,8 +42,8 @@ class Trip(models.Model):
         max_length = 100,
     )
 
-    slug = models.SlugField(
-        max_length = 100,
+    slug = AutoSlugField(
+        populate_from = 'title',
         unique = True,
     )
 
