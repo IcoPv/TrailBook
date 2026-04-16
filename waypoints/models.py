@@ -58,7 +58,8 @@ class Waypoint(models.Model):
         validators = [
             MinValueValidator(-90),
             MaxValueValidator(90)
-        ]
+        ],
+        help_text = 'Latitude in decimal degrees, up to 6 decimal spaces (range: -90 to 90)'
     )
 
     longitude = models.DecimalField(
@@ -67,7 +68,8 @@ class Waypoint(models.Model):
         validators = [
             MinValueValidator(-180),
             MaxValueValidator(180)
-        ]
+        ],
+        help_text = 'Longitude in decimal degrees, up to 6 decimal spaces (range: -180 to 180)'
     )
 
     elevation = models.IntegerField(

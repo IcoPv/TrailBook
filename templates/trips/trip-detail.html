@@ -50,9 +50,48 @@
 
 <!-- Waypoints Section -->
 <div class="card mb-4 shadow-sm">
-    <div class="card-body">
-        <h5 class="card-title">Waypoints</h5>
-        <p class="text-muted mb-0">Coming in Phase 3...</p>
+    <div class="card-header d-flex align-items-center justify-content-between">
+        <h5 class="mb-0">Waypoints</h5>
+        {% if trip.owner == request.user %}
+            <a href="{% url 'trips:add_waypoints' trip.slug %}" class="btn btn-primary btn-sm">Edit Waypoints</a>
+            <a href="{% url 'trips:add_single_waypoint' trip.slug %}" class="btn btn-sm btn-primary">+ Add Waypoint</a>
+        {% endif %}
+    </div>
+    <div class="card-body p-0">
+        {% if trip.waypoints.all %}
+        <ul class="list-group list-group-flush">
+            {% for waypoint in trip.waypoints.all %}
+            <li class="list-group-item">
+                <div class="d-flex align-items-start justify-content-between gap-2">
+                    <div>
+                        <span class="fw-semibold">#{{ waypoint.order }} — {{ waypoint.name }}</span>
+                        <div class="text-muted small mt-1">
+                            {{ waypoint.latitude|floatformat:4 }}, {{ waypoint.longitude|floatformat:4 }}
+                            {% if waypoint.elevation %}
+                                &nbsp;&middot;&nbsp; {{ waypoint.elevation }} m
+                            {% endif %}
+                        </div>
+                        {% if waypoint.categories.all %}
+                        <div class="mt-1">
+                            {% for category in waypoint.categories.all %}
+                            <span class="badge bg-secondary me-1">{{ category.name }}</span>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% if trip.owner == request.user %}
+                    <div class="d-flex gap-1 flex-shrink-0">
+                        <a href="{% url 'waypoints:waypoint_edit' waypoint.pk %}" class="btn btn-outline-secondary btn-sm">Edit</a>
+                        <a href="{% url 'waypoints:waypoint_delete' waypoint.pk %}" class="btn btn-outline-danger btn-sm">Delete</a>
+                    </div>
+                    {% endif %}
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p class="text-muted mb-0 p-3">No waypoints yet.</p>
+        {% endif %}
     </div>
 </div>
 

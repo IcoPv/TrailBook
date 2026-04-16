@@ -1,7 +1,7 @@
 from django.urls import path, include
 
 from trips.views import TripListView, TripDetailView, TripCreateView, TripUpdateView, TripDeleteView
-from waypoints.views import WaypointFormsetView
+from waypoints.views import WaypointFormsetView, WaypointCreateView
 
 app_name = 'trips'
 
@@ -10,6 +10,7 @@ trips_urlpatterns = [
     path('', TripDetailView.as_view(), name='trip_detail'),
     path('update_trip/', TripUpdateView.as_view(), name='update_trip'),
     path('delete_trip/', TripDeleteView.as_view(), name='delete_trip'),
+    path('waypoints/add-single/', WaypointCreateView.as_view(), name='add_single_waypoint'),
     path('waypoints/add/', WaypointFormsetView.as_view(), name='add_waypoints'),
 ]
 urlpatterns = [
