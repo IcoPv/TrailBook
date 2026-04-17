@@ -19,6 +19,7 @@ urlpatterns = [
     path('accounts/', include('accounts.urls')),
     path('trips/', include('trips.urls')),
     path('waypoints/', include('waypoints.urls')),
+    path('photos/', include('gallery.urls')),
     path('', TemplateView.as_view(template_name='home.html'), name='home'),
 ]
 

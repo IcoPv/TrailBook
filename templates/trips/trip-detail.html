@@ -95,6 +95,45 @@
     </div>
 </div>
 
+<!-- Photos Section -->
+<div class="card mb-4 shadow-sm">
+    <div class="card-header d-flex align-items-center justify-content-between">
+        <h5 class="mb-0">Photos</h5>
+        {% if trip.owner == request.user %}
+            <a href="{% url 'trips:upload_photo' trip.slug %}" class="btn btn-primary btn-sm">Upload Photo</a>
+        {% endif %}
+    </div>
+    <div class="card-body">
+        {% if trip.photos.all %}
+        <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-3">
+            {% for photo in trip.photos.all %}
+            <div class="col">
+                <div class="card h-100">
+                    <img src="{% if photo.is_thumbnail_generated %}{{ photo.thumbnail.url }}{% else %}{{ photo.image.url }}{% endif %}"
+                         class="card-img-top"
+                         alt="{{ photo.caption|default:'Trip photo' }}"
+                         style="height: 200px; object-fit: cover;">
+                    <div class="card-body p-2">
+                        {% if photo.caption %}
+                            <p class="card-text small mb-1">{{ photo.caption }}</p>
+                        {% endif %}
+                        {% if photo.waypoint %}
+                            <p class="card-text text-muted small mb-1">Linked to: {{ photo.waypoint.name }}</p>
+                        {% endif %}
+                        {% if trip.owner == request.user %}
+                            <a href="{% url 'gallery:photo_delete' photo.pk %}" class="btn btn-danger btn-sm mt-1">Delete</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p class="text-muted mb-0">No photos yet.</p>
+        {% endif %}
+    </div>
+</div>
+
 <!-- Trail Notes Section -->
 <div class="card mb-4 shadow-sm">
     <div class="card-body">

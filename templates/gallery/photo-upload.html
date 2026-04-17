@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% load crispy_forms_filters %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<!-- Page Header -->
+<div class="mb-4">
+    <h1 class="h2">Upload Photo to {{ trip.title }}</h1>
+    <p class="text-muted">Attach a photo to this trip or pin it to a specific waypoint along the route.</p>
+</div>
+
+<!-- Upload Form -->
+<div class="card shadow-sm">
+    <div class="card-body">
+        <form method="POST" enctype="multipart/form-data" novalidate>
+            {% csrf_token %}
+            {{ form|crispy }}
+
+            <!-- Actions -->
+            <div class="d-flex gap-2 mt-3">
+                <button type="submit" class="btn btn-primary">Upload Photo</button>
+                <a href="{% url 'trips:trip_detail' trip.slug %}" class="btn btn-outline-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}
