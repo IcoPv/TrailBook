@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<!-- Warning -->
+<div class="alert alert-danger" role="alert">
+    <strong>Warning:</strong> This photo will be permanently deleted and cannot be recovered.
+</div>
+
+<!-- Photo Preview -->
+<div class="card mb-4" style="max-width: 300px;">
+    <img src="{{ photo.image.url }}" class="card-img-top" alt="Photo to delete">
+    {% if photo.caption %}
+    <div class="card-body p-2">
+        <p class="card-text text-muted small">{{ photo.caption }}</p>
+    </div>
+    {% endif %}
+</div>
+
+<!-- Delete Form -->
+<form method="POST">
+    {% csrf_token %}
+    <div class="d-flex gap-2">
+        <button type="submit" class="btn btn-danger">Delete Photo</button>
+        <a href="{% url 'trips:trip_detail' photo.trip.slug %}" class="btn btn-outline-secondary">Cancel</a>
+    </div>
+</form>
+
+{% endblock %}

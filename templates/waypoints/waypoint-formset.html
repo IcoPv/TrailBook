@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+{% load crispy_forms_filters %}
+{% load crispy_forms_tags %}
+
+{% block title %}Add Waypoints — {{ trip.title }}{% endblock %}
+
+{% block content %}
+
+<!-- Page Header -->
+<div class="mb-4">
+    <h1 class="h2">Add Waypoints to {{ trip.title }}</h1>
+    <p class="text-muted">Add multiple stops to your trip quickly.</p>
+    <a href="{% url 'trips:trip_detail' trip.slug %}" class="btn btn-outline-secondary btn-sm">
+        &larr; Back to Trip
+    </a>
+</div>
+
+<!-- Formset -->
+<form method="post">
+    {% csrf_token %}
+    {{ formset.management_form }}
+
+    {% for form in formset %}
+    <div class="card mb-3">
+        <div class="card-header py-2">
+            <small class="fw-semibold text-secondary">Waypoint #{{ forloop.counter }}</small>
+        </div>
+        <div class="card-body">
+
+            <!-- Non-field errors for this form -->
+            {% if form.non_field_errors %}
+            <div class="alert alert-danger py-2">
+                {{ form.non_field_errors }}
+            </div>
+            {% endif %}
+
+            <!-- Hidden id field for existing waypoints -->
+            {{ form.id }}
+
+            <!-- Name — full width -->
+            <div class="row mb-2">
+                <div class="col-12">
+                    {{ form.name|as_crispy_field }}
+                </div>
+            </div>
+
+            <!-- Latitude, Longitude, Order -->
+            <div class="row mb-2">
+                <div class="col-md-5">
+                    {{ form.latitude|as_crispy_field }}
+                </div>
+                <div class="col-md-5">
+                    {{ form.longitude|as_crispy_field }}
+                </div>
+                <div class="col-md-2">
+                    {{ form.order|as_crispy_field }}
+                </div>
+            </div>
+
+            <!-- Categories — full width -->
+            <div class="row mb-2">
+                <div class="col-12">
+                    {{ form.categories|as_crispy_field }}
+                </div>
+            </div>
+
+            <!-- Delete checkbox -->
+            {% if form.DELETE %}
+            <div class="border-top pt-2 mt-2">
+                <div class="form-check">
+                    {{ form.DELETE }}
+                    <label class="form-check-label text-danger fw-semibold" for="{{ form.DELETE.id_for_label }}">
+                        Remove this waypoint
+                    </label>
+                </div>
+            </div>
+            {% endif %}
+
+        </div>
+    </div>
+    {% endfor %}
+
+    <!-- Formset-level non-form errors -->
+    {% if formset.non_form_errors %}
+    <div class="alert alert-danger">
+        {{ formset.non_form_errors }}
+    </div>
+    {% endif %}
+
+    <!-- Submit Actions -->
+    <div class="d-flex gap-2 mt-3">
+        <button type="submit" class="btn btn-primary">Save Waypoints</button>
+        <a href="{% url 'trips:trip_detail' trip.slug %}" class="btn btn-outline-secondary">Cancel</a>
+    </div>
+
+</form>
+
+{% endblock %}

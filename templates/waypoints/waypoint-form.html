@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% load crispy_forms_filters %}
+{% load crispy_forms_tags %}
+
+{% block title %}{% if form.instance.pk %}Edit Waypoint — {{ waypoint.name }}{% else %}Create New Waypoint{% endif %}{% endblock %}
+
+{% block content %}
+
+<!-- Page Header -->
+<div class="mb-4">
+    {% if form.instance.pk %}
+        <h1 class="h2">Edit Waypoint: {{ waypoint.name }}</h1>
+        <p class="text-muted">Part of {{ waypoint.trip.title }}</p>
+    {% else %}
+        <h1 class="h2">Create New Waypoint</h1>
+        <p class="text-muted">Add a new stop to your trip</p>
+    {% endif %}
+</div>
+
+<!-- Waypoint Form -->
+<div class="card">
+    <div class="card-body">
+        <form method="post">
+            {% csrf_token %}
+            {{ form|crispy }}
+
+            <!-- Actions -->
+            <div class="d-flex gap-2 mt-3">
+                <button type="submit" class="btn btn-primary">
+                    {% if form.instance.pk %}Save Changes{% else %}Create Waypoint{% endif %}
+                </button>
+                {% if form.instance.pk %}
+                    <a href="{% url 'trips:trip_detail' waypoint.trip.slug %}" class="btn btn-outline-secondary">Cancel</a>
+                {% else %}
+                    <a href="{% url 'trips:trip_detail' trip.slug %}" class="btn btn-outline-secondary">Cancel</a>
+                {% endif %}
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load crispy_forms_filters %}
+{% load crispy_forms_tags %}
+
+{% block title %}{% if form.instance.pk %}Edit Trip{% else %}Create New Trip{% endif %} | TrailBook{% endblock %}
+
+{% block content %}
+
+<!-- Form Header -->
+<h1 class="mb-4">{% if form.instance.pk %}Edit Trip{% else %}Create New Trip{% endif %}</h1>
+
+<!-- Trip Form -->
+<div class="card shadow-sm mb-4">
+    <div class="card-body">
+        <form method="POST">
+            {% csrf_token %}
+            {{ form|crispy }}
+            <button type="submit" class="btn btn-primary mt-2">
+                {% if form.instance.pk %}Update Trip{% else %}Create Trip{% endif %}
+            </button>
+        </form>
+    </div>
+</div>
+
+<!-- Cancel Link -->
+{% if form.instance.pk %}
+    <a href="{% url 'trips:trip_detail' form.instance.slug %}" class="text-decoration-none">&larr; Cancel</a>
+{% else %}
+    <a href="{% url 'trips:trips_list' %}" class="text-decoration-none">&larr; Cancel</a>
+{% endif %}
+
+{% endblock %}
