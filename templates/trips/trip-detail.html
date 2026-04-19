@@ -120,7 +120,7 @@
                         {% if photo.waypoint %}
                             <p class="card-text text-muted small mb-1">Linked to: {{ photo.waypoint.name }}</p>
                         {% endif %}
-                        {% if trip.owner == request.user %}
+                        {% if trip.owner == request.user or perms.gallery.can_moderate_photos %}
                             <a href="{% url 'gallery:photo_delete' photo.pk %}" class="btn btn-danger btn-sm mt-1">Delete</a>
                         {% endif %}
                     </div>

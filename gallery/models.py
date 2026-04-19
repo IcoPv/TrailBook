@@ -50,6 +50,9 @@ class Photo(models.Model):
 
     class Meta:
         ordering = ['-uploaded_at']
+        permissions = [
+            ('can_moderate_photos', 'Can delete any photo'),
+        ]
 
     def __str__(self):
         return f"Photo for {self.trip.title} ({self.pk})"
