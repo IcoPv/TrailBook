@@ -1,8 +1,11 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.db.models import Q
 from django.contrib import messages
+from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
+from django.views import View
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+
 
 from trips.forms import TripSearchForm, TripForm
 from trips.models import Trip
@@ -100,3 +103,20 @@ class TripDeleteView(LoginRequiredMixin, DeleteView):
 
     def get_queryset(self):
         return Trip.objects.filter(owner=self.request.user)
+
+
+
+
+class ToggleFeaturedView(LoginRequiredMixin, PermissionRequiredMixin, View):
+
+    permission_required = 'trips.can_feature_trips'
+    http_method_names = ['post']
+
+    def post(self, request, slug):
+
+        trip = get_object_or_404(Trip, slug=slug)
+        trip.is_featured = not trip.is_featured
+        trip.save(update_fields=['is_featured'])
+        action = 'featured' if trip.is_featured else 'unfeatured'
+        messages.success(request, f"Trip {action}.")
+        return redirect('trips:trip_detail', slug=trip.slug)
