@@ -56,6 +56,7 @@ class WaypointFormsetView(LoginRequiredMixin, View):
 
 
 class WaypointCreateView(LoginRequiredMixin, CreateView):
+
     model = Waypoint
     form_class = WaypointForm
     template_name = 'waypoints/waypoint-form.html'
@@ -68,7 +69,7 @@ class WaypointCreateView(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         form.instance.trip = self.trip
-        messages.success((self.request, "Waypoint added successfully!"))
+        messages.success(self.request, "Waypoint added successfully!")
         return super().form_valid(form)
 
     def get_context_data(self, **kwargs):
