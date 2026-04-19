@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.urls import path, include
 
 urlpatterns = [
+    path('', HomeView.as_view(), name='home'),
     path('admin/', admin.site.urls),
     path('accounts/', include('accounts.urls')),
     path('trips/', include('trips.urls')),
@@ -24,7 +25,8 @@ urlpatterns = [
     path('photos/', include('gallery.urls')),
     path('notes/', include('community.urls')),
     path('bookmarks/', BookmarkListView.as_view(), name='bookmarks'),
-    path('', HomeView.as_view(), name='home'),
+    path('api/', include('api.urls')),
+
 ]
 
 if settings.DEBUG:
