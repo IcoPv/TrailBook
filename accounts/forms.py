@@ -22,6 +22,14 @@ class RegistrationForm(UserCreationForm):
 
 
 class ProfileForm(forms.ModelForm):
+
+    username = forms.CharField(disabled=True, required=False)
+
     class Meta:
         model = Profile
         fields = ["bio", "avatar", "vehicle_type", "riding_experience", "location"]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if self.instance and self.instance.user_id:
+            self.fields['username'].initial = self.instance.user.username
