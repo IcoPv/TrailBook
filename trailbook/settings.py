@@ -146,7 +146,10 @@ STORAGES = {
 
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+if os.environ.get('WEBSITE_HOSTNAME'):
+    MEDIA_ROOT = 'home/site/wwwroot/media/'
+else:
+    MEDIA_ROOT = BASE_DIR / 'media'
 
 
 LOGIN_URL = 'accounts:login'
