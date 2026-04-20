@@ -220,7 +220,7 @@ Example: `GET /api/trips/?difficulty=moderate&vehicle_type=motorcycle`
 
 ## Deployment
 
-The live application is deployed at: **[your deployment URL here]**
+The live application is deployed at: http://trailbook-c6gefxfdgng4exdj.swedencentral-01.azurewebsites.net/
 
 When deploying, ensure the following:
 
