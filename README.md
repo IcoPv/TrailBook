@@ -49,7 +49,7 @@ Built with Django 6, Django REST Framework, Celery, and PostgreSQL.
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/<your-username>/TrailBook.git
+git clone https://github.com/IcoPv/TrailBook.git
 cd TrailBook
 ```
 
