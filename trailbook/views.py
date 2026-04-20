@@ -1,3 +1,4 @@
+from django.shortcuts import render
 from django.views.generic import TemplateView
 
 from trips.models import Trip
@@ -12,3 +13,12 @@ class HomeView(TemplateView):
             is_featured=True
         ).select_related('owner').prefetch_related('tags')[:6]
         return context
+
+
+
+def page_not_found(request, exception):
+    return render(request, '404.html', status=404)
+
+def server_error(request):
+    return render(request, '500.html', status=500)
+

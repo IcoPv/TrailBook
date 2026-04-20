@@ -1,12 +1,12 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-from django.db.models import Q
+from django.db.models import Q, Exists, OuterRef
 from django.contrib import messages
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
-
+from community.models import Bookmark
 from trips.forms import TripSearchForm, TripForm
 from trips.models import Trip
 
@@ -19,8 +19,18 @@ class TripListView(ListView):
     paginate_by = 10
 
     def get_queryset(self):
+
         queryset = Trip.objects.select_related('owner').prefetch_related('tags')
         form = TripSearchForm(self.request.GET)
+
+        user = self.request.user
+
+        if user.is_authenticated:
+            queryset = queryset.annotate(
+                is_bookmarked=Exists(
+                    Bookmark.objects.filter(user=user, trip=OuterRef('pk'))
+                )
+            )
 
         if form.is_valid():
             query = form.cleaned_data.get('query')
@@ -57,7 +67,18 @@ class TripDetailView(DetailView):
     slug_field = 'slug'
     slug_url_kwarg = 'slug'
 
+    def get_context_data(self, **kwargs):
 
+        context = super().get_context_data(**kwargs)
+        user = self.request.user
+
+        if user.is_authenticated:
+            from community.models import Bookmark
+            context['is_bookmarked'] = Bookmark.objects.filter(user=user, trip=self.object).exists()
+
+        else:
+            context['is_bookmarked'] = False
+        return context
 
 class TripCreateView(LoginRequiredMixin, CreateView):
 

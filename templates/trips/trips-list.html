@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load trip_extras %}
 {% load crispy_forms_filters %}
 {% load crispy_forms_tags %}
 
@@ -54,6 +55,10 @@
                         </a>
                     </h5>
 
+                    {% if user.is_authenticated and trip.is_bookmarked %}
+                        <span class="badge bg-warning text-dark">★ Saved</span>
+                    {% endif %}
+
                     <p class="text-muted small mb-2">by {{ trip.owner.username }}</p>
 
                     <div class="mb-2">
@@ -78,7 +83,7 @@
                         <li>
                             <strong>Duration:</strong>
                             {% if trip.duration_days %}
-                                {{ trip.duration_days }} day{{ trip.duration_days|pluralize }}
+                                <span class="badge bg-info">{{ trip|duration_label }}</span>
                             {% else %}
                                 &mdash;
                             {% endif %}

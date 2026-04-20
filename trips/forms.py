@@ -27,6 +27,10 @@ class TripForm(forms.ModelForm):
 
         return cleaned_data
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if self.instance and self.instance.pk:
+            self.fields['start_date'].disabled = True
 
 
 class TripSearchForm(forms.Form):
