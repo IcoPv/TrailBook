@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}404 — Route Not Found | TrailBook{% endblock %}
+
+{% block content %}
+<div class="container text-center py-5 my-5">
+    <p class="display-1 fw-bold text-muted">404</p>
+    <h1 class="mb-3">Route Not Found</h1>
+    <p class="lead text-muted mb-4">
+        Looks like you took a wrong turn out there.<br>
+        This trail doesn't exist, or it may have been rerouted.
+    </p>
+    <div class="d-flex justify-content-center gap-3">
+        <a href="{% url 'home' %}" class="btn btn-primary px-4">Back to Home</a>
+        <a href="{% url 'trips:trips_list' %}" class="btn btn-outline-secondary px-4">Browse Trips</a>
+    </div>
+</div>
+{% endblock %}

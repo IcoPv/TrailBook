@@ -1,0 +1,116 @@
+/* ── Color palette ────────────────────────────────────────────
+   --trail-orange : #c96e3a   warm, earthy accent
+   --trail-green  : #2d5016   deep forest
+   --trail-sand   : #f5efe6   warm off-white background tint
+   ──────────────────────────────────────────────────────────── */
+
+/* Smooth scroll */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Warm off-white body background */
+body {
+    background-color: #f5efe6;
+}
+
+/* Headings — tighter tracking + deep green tint */
+h1, h2 {
+    letter-spacing: -0.03em;
+    color: #2d5016;
+}
+
+/* Navbar — earthy dark green instead of plain dark */
+.navbar {
+    background-color: #1e3a0f !important;
+    border-bottom: 2px solid #c96e3a;
+}
+
+.navbar-brand {
+    color: #c96e3a !important;
+}
+
+/* Footer — earthy separation */
+footer {
+    border-top: 2px solid #c96e3a;
+    background-color: #1e3a0f;
+    color: #ccc;
+}
+
+footer a {
+    color: #c96e3a;
+}
+
+footer a:hover {
+    color: #e88a55;
+}
+
+/* Card — warm white surface with left accent on hover */
+.card {
+    background-color: #fffdf9;
+    border: 1px solid #e5d9cc;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-left-color 0.2s ease;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+    border-left: 3px solid #c96e3a;
+}
+
+/* Primary button — earthy orange */
+.btn-primary {
+    background-color: #c96e3a;
+    border-color: #b85e2e;
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+    background-color: #b85e2e;
+    border-color: #a34f22;
+}
+
+/* Outline secondary button — green tint */
+.btn-outline-secondary:hover {
+    background-color: #2d5016;
+    border-color: #2d5016;
+    color: #fff;
+}
+
+/* Badge pills — orange accent, softer padding */
+.badge.bg-primary {
+    background-color: #c96e3a !important;
+}
+
+.badge.bg-success {
+    background-color: #2d5016 !important;
+}
+
+.badge {
+    padding: 0.45em 0.75em;
+    border-radius: 50rem;
+}
+
+/* Links — earthy orange */
+a {
+    color: #c96e3a;
+}
+
+a:hover {
+    color: #a34f22;
+}
+
+/* Form focus — muted earthy outline */
+.form-control:focus,
+.form-select:focus {
+    border-color: #c96e3a;
+    box-shadow: 0 0 0 0.2rem rgba(201, 110, 58, 0.2);
+}
+
+/* Page section divider utility */
+.trail-divider {
+    border: none;
+    border-top: 2px solid #c96e3a;
+    opacity: 0.4;
+    margin: 2rem 0;
+}
