@@ -50,7 +50,11 @@ class PhotoDeleteView(LoginRequiredMixin, DeleteView):
     context_object_name = 'photo'
 
     def get_queryset(self):
-        return Photo.objects.filter(trip__owner=self.request.user)
+        qs = Photo.objects.all()
+        user = self.request.user
+        if user.has_perm('gallery.can_moderate_photos'):
+            return qs
+        return qs.filter(trip__owner=user)
 
     def get_success_url(self):
         messages.success(self.request, "Photo deleted successfully!")

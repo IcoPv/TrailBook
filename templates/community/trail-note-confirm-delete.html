@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}Delete Trail Note | TrailBook{% endblock %}
+
+{% block content %}
+
+<!-- Warning -->
+<div class="alert alert-danger" role="alert">
+    <strong>Warning:</strong> This trail note will be permanently deleted and cannot be recovered.
+</div>
+
+<!-- Note Preview -->
+<div class="card shadow-sm mb-4">
+    <div class="card-body">
+        <p class="card-text">{{ note.body }}</p>
+        <hr>
+        <p class="mb-1 text-muted small">Author: <strong>{{ note.author.username }}</strong></p>
+        <p class="mb-0 text-muted small">Trip: <strong>{{ note.trip.title }}</strong></p>
+    </div>
+</div>
+
+<!-- Delete Form -->
+<form method="POST">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger me-2">Delete Note</button>
+    <a href="{% url 'trips:trip_detail' note.trip.slug %}" class="btn btn-secondary">Cancel</a>
+</form>
+
+{% endblock %}

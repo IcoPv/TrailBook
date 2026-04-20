@@ -120,7 +120,7 @@
                         {% if photo.waypoint %}
                             <p class="card-text text-muted small mb-1">Linked to: {{ photo.waypoint.name }}</p>
                         {% endif %}
-                        {% if trip.owner == request.user %}
+                        {% if trip.owner == request.user or perms.gallery.can_moderate_photos %}
                             <a href="{% url 'gallery:photo_delete' photo.pk %}" class="btn btn-danger btn-sm mt-1">Delete</a>
                         {% endif %}
                     </div>
@@ -136,19 +136,72 @@
 
 <!-- Trail Notes Section -->
 <div class="card mb-4 shadow-sm">
+    <div class="card-header">
+        <h5 class="mb-0">Trail Notes</h5>
+    </div>
     <div class="card-body">
-        <h5 class="card-title">Trail Notes</h5>
-        <p class="text-muted mb-0">Coming in Phase 5...</p>
+
+        {% if user.is_authenticated %}
+        <form method="post" action="{% url 'trips:add_note' trip.slug %}" class="mb-4">
+            {% csrf_token %}
+            <div class="mb-2">
+                <textarea name="body" rows="3" class="form-control" placeholder="Share your thoughts about this trail..."></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary btn-sm">Add Note</button>
+        </form>
+        {% endif %}
+
+        {% for note in trip.trail_notes.all %}
+        <div class="border rounded p-3 {% if not forloop.last %}mb-3{% endif %}">
+            <div class="d-flex justify-content-between align-items-start">
+                <div>
+                    <span class="fw-semibold">
+                        <a href="{% url 'accounts:profile' note.author.username %}" class="text-decoration-none">{{ note.author.username }}</a>
+                    </span>
+                    <span class="text-muted small ms-2">{{ note.created_at|date:"M d, Y" }}</span>
+                </div>
+                {% if note.author == request.user or perms.community.can_moderate_trail_notes %}
+                <div class="d-flex gap-2">
+                    <a href="{% url 'community:note_edit' note.pk %}" class="small text-secondary text-decoration-none">Edit</a>
+                    <a href="{% url 'community:note_delete' note.pk %}" class="small text-danger text-decoration-none">Delete</a>
+                </div>
+                {% endif %}
+            </div>
+            <p class="mb-0 mt-2">{{ note.body }}</p>
+        </div>
+        {% empty %}
+        <p class="text-muted mb-0">No trail notes yet. Be the first to share.</p>
+        {% endfor %}
+
     </div>
 </div>
 
-<!-- Owner Actions -->
-{% if trip.owner == request.user %}
-<div class="d-flex gap-2 mb-4">
-    <a href="{% url 'trips:update_trip' trip.slug %}" class="btn btn-primary">Edit Trip</a>
-    <a href="{% url 'trips:delete_trip' trip.slug %}" class="btn btn-outline-danger">Delete Trip</a>
+<!-- Trip Actions -->
+<div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-4">
+
+    <div class="d-flex flex-wrap gap-2">
+        {% if trip.owner == request.user %}
+            <a href="{% url 'trips:update_trip' trip.slug %}" class="btn btn-primary">Edit Trip</a>
+            <a href="{% url 'trips:delete_trip' trip.slug %}" class="btn btn-outline-danger">Delete Trip</a>
+        {% endif %}
+        {% if perms.trips.can_feature_trips %}
+            <form method="post" action="{% url 'trips:toggle_featured' trip.slug %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-outline-warning">
+                    {% if trip.is_featured %}Unfeature Trip{% else %}Feature Trip{% endif %}
+                </button>
+            </form>
+        {% endif %}
+    </div>
+
+    {% if user.is_authenticated and user != trip.owner %}
+    <form method="post" action="{% url 'trips:bookmark_toggle' trip.slug %}">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-outline-secondary">&#9873; Toggle Bookmark</button>
+    </form>
+    {% endif %}
+
 </div>
-{% endif %}
 
 <!-- Back Link -->
 <a href="{% url 'trips:trips_list' %}" class="text-decoration-none">&larr; Back to Trips</a>
